@@ -103,3 +103,65 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/* ... keep existing code (original base tokens) */
+
+/* Typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+@layer base {
+  :root {
+    /* Brand tokens */
+    --brand: 262 83% 56%;
+    --brand-2: 295 80% 60%;
+    --brand-3: 200 90% 60%;
+
+    /* Gradients & motion */
+    --gradient-hero: linear-gradient(135deg, hsl(var(--brand)) 0%, hsl(var(--brand-2)) 100%);
+    --gradient-cta: linear-gradient(135deg, hsl(var(--brand-2)) 0%, hsl(var(--brand-3)) 100%);
+
+    --shadow-soft: 0 10px 30px -10px hsl(var(--brand) / 0.25);
+    --shadow-glow: 0 0 40px hsl(var(--brand-2) / 0.35);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    --brand: 262 83% 64%;
+    --brand-2: 295 80% 66%;
+    --brand-3: 200 90% 66%;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; }
+}
+
+@layer utilities {
+  .bg-hero-gradient { background-image: var(--gradient-hero); }
+  .bg-cta-gradient { background-image: var(--gradient-cta); }
+  .text-gradient {
+    background-image: var(--gradient-hero);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .shadow-soft { box-shadow: var(--shadow-soft); }
+  .shadow-glow { box-shadow: var(--shadow-glow); }
+  .effect-lift { transition: var(--transition-smooth); }
+  .effect-lift:hover { transform: translateY(-2px); box-shadow: var(--shadow-soft); }
+
+  /* Signature interaction: interactive spotlight following the cursor */
+  .interactive-spot { position: relative; overflow: hidden; }
+  .interactive-spot::before {
+    content: "";
+    position: absolute;
+    inset: -20%;
+    background: radial-gradient(600px 300px at var(--x, 50%) var(--y, 50%), hsl(var(--brand) / 0.25), transparent 60%);
+    pointer-events: none;
+    transition: opacity 0.2s ease-out;
+    opacity: 0.6;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .effect-lift:hover { transform: none; }
+    .interactive-spot::before { display: none; }
+  }
+}
